@@ -37,6 +37,18 @@ abstract class AbstractClient
     protected $isConnected = false;
 
     /**
+     * APNS Environment
+     * @var int
+     */
+    protected $env;
+
+    /**
+     * SSL Options
+     * @var array
+     */
+    protected $cert;
+
+    /**
      * Stream Socket
      * @var Resource
      */
@@ -75,7 +87,9 @@ abstract class AbstractClient
             }
             $sslOptions['passphrase'] = $passPhrase;
         }
-        $this->connect($this->uris[$environment], $sslOptions);
+        $this->env = $this->uris[$environment];
+        $this->cert = $sslOptions;
+        $this->connect($this->env, $this->cert);
         $this->isConnected = true;
 
         return $this;
@@ -111,6 +125,20 @@ abstract class AbstractClient
         }
         stream_set_blocking($this->socket, 0);
         stream_set_write_buffer($this->socket, 0);
+
+        return $this;
+    }
+
+    /**
+     * Reconnect to Host
+     *
+     * @return AbstractClient
+     */
+    public function reconnect()
+    {
+        $this->close();
+        $this->connect($this->env, $this->cert);
+        $this->isConnected = true;
 
         return $this;
     }
