@@ -51,13 +51,12 @@ class Message extends AbstractClient
             throw new Exception\RuntimeException('Server is unavailable; please retry later');
         }
 
-        $shots = 0;
-        while ($shots < 3 && $ret == 0) {
-            usleep(10000);
-            $ret = $this->write($message->getPayloadJson());
-            $shots++;
+        $messageResponse = $this->read();
+
+        if ($ret == 0 && $messageResponse == '') {
+            return false;
         }
 
-        return new MessageResponse($this->read());
+        return new MessageResponse($messageResponse);
     }
 }
