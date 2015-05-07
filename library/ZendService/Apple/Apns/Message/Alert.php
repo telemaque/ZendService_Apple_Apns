@@ -48,6 +48,24 @@ class Alert
     protected $launchImage;
 
     /**
+     * A short string describing the purpose of the notification (IOS 8.2)
+     * @var string|null
+     */
+    protected $title;
+
+    /**
+     * The key to a title string (IOS 8.2)
+     * @var string|null
+     */
+    protected $titleLocKey;
+
+    /**
+     * The key to a title string (IOS 8.2)
+     * @var array|null
+     */
+    protected $titleLocArgs;
+
+    /**
      * Constructor
      *
      * @param  string $body
@@ -57,7 +75,7 @@ class Alert
      * @param  string $launchImage
      * @return Alert
      */
-    public function __construct($body = null, $actionLocKey = null, $locKey = null, $locArgs = null, $launchImage = null)
+    public function __construct($body = null, $actionLocKey = null, $locKey = null, $locArgs = null, $launchImage = null, $title = null, $titleLocKey = null, $titleLocArgs = null)
     {
         if ($body !== null) {
             $this->setBody($body);
@@ -73,6 +91,15 @@ class Alert
         }
         if ($launchImage !== null) {
             $this->setLaunchImage($launchImage);
+        }
+        if ($title !== null) {
+            $this->setTitle($title);
+        }
+        if ($titleLocKey !== null) {
+            $this->setTitleLocKey($titleLocKey);
+        }
+        if ($titleLocArgs !== null) {
+            $this->setTitleLocArgs($titleLocArgs);
         }
     }
 
@@ -204,6 +231,86 @@ class Alert
             throw new Exception\InvalidArgumentException('Launch image must be null OR a scalar value');
         }
         $this->launchImage =  $image;
+
+        return $this;
+    }
+
+    /**
+     * Get title
+     *
+     * @return string|null
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * Set title
+     *
+     * @param  string|null $image
+     * @return Alert
+     */
+    public function setTitle($title)
+    {
+        if (!is_null($title) && !is_scalar($title)) {
+            throw new Exception\InvalidArgumentException('Title must be null OR a scalar value');
+        }
+        $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * Get title loc key
+     *
+     * @return string|null
+     */
+    public function getTitleLocKey()
+    {
+        return $this->titleLocKey;
+    }
+
+    /**
+     * Set title loc key
+     *
+     * @param  string|null $image
+     * @return Alert
+     */
+    public function setTitleLocKey($key)
+    {
+        if (!is_null($key) && !is_scalar($key)) {
+            throw new Exception\InvalidArgumentException('TitleLocKey must be null OR a scalar value');
+        }
+        $this->titleLocKey = $key;
+
+        return $this;
+    }
+
+    /**
+     * Get title Locale Arguments
+     *
+     * @return array|null
+     */
+    public function getTitleLocArgs()
+    {
+        return $this->titleLocArgs;
+    }
+
+    /**
+     * Set title Locale Arguments
+     *
+     * @param  array $args
+     * @return Alert
+     */
+    public function setTitleLocArgs(array $args)
+    {
+        foreach ($args as $a) {
+            if (!is_scalar($a)) {
+                throw new Exception\InvalidArgumentException('Title Arguments must only contain scalar values');
+            }
+        }
+        $this->titleLocArgs = $args;
 
         return $this;
     }
