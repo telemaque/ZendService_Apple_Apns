@@ -123,6 +123,7 @@ abstract class AbstractClient
                 $errstr
             ));
         }
+
         stream_set_blocking($this->socket, 0);
         stream_set_write_buffer($this->socket, 0);
 
@@ -136,6 +137,7 @@ abstract class AbstractClient
      */
     public function reconnect()
     {
+        var_dump('reconnect');
         $this->close();
         $this->connect($this->env, $this->cert);
         $this->isConnected = true;
@@ -181,7 +183,7 @@ abstract class AbstractClient
         }
         $data = false;
         if (!feof($this->socket)) {
-            $data = fread($this->socket, (int) $length);
+           $data = fread($this->socket, (int) $length);
         }
 
         return $data;
@@ -199,7 +201,8 @@ abstract class AbstractClient
             throw new Exception\RuntimeException('You must open the connection prior to writing data');
         }
 
-        return @fwrite($this->socket, $payload);
+        $a = fwrite($this->socket, $payload);
+        return $a;
     }
 
     /**

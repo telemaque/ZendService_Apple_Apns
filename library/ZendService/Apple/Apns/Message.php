@@ -123,7 +123,7 @@ class Message
     public function setToken($token)
     {
 
-        if (!is_string($token)) {
+        /*if (!is_string($token)) {
             throw new Exception\InvalidArgumentException(sprintf(
                     'Device token must be a string, "%s" given.',
                     gettype($token)
@@ -143,7 +143,7 @@ class Message
                     'Device token must be a 64 charsets, Token length given: %d.',
                     mb_strlen($token)
             ));
-        }
+        }*/
 
         $this->token = $token;
 

@@ -50,12 +50,33 @@ class Message extends AbstractClient
         if ($ret === false) {
             throw new Exception\RuntimeException('Server is unavailable; please retry later');
         }
-
         $messageResponse = $this->read();
 
         if ($ret == 0 && $messageResponse == '') {
             return false;
         }
+
+
+        return new MessageResponse($messageResponse);
+    }
+
+
+    public function sendPayload($payload)
+    {
+        if (!$this->isConnected()) {
+            throw new Exception\RuntimeException('You must first open the connection by calling open()');
+        }
+
+        $ret = $this->write($payload);
+        if ($ret === false) {
+            throw new Exception\RuntimeException('Server is unavailable; please retry later');
+        }
+        $messageResponse = $this->read();
+
+        if ($ret == 0 && $messageResponse == '') {
+            return false;
+        }
+
 
         return new MessageResponse($messageResponse);
     }
