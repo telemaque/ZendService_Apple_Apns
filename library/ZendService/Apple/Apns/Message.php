@@ -409,6 +409,7 @@ class Message
         // don't escape utf8 payloads unless json_encode does not exist.
         if (defined('JSON_UNESCAPED_UNICODE')) {
             $payload = json_encode($payload, JSON_UNESCAPED_UNICODE);
+            $payload = str_replace("\\\\u","\\u",$payload);
         } else {
             $payload = JsonEncoder::encode($payload);
         }
